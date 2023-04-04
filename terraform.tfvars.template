@@ -1,0 +1,27 @@
+
+# AWS access key used to create infrastructure
+aws_access_key = 
+
+# AWS secret key used to create AWS infrastructure
+aws_secret_key = 
+
+vpc_id = 
+
+# subnet_id = 
+subnet_ids = [
+]
+private_subnet_ids = [
+]
+
+# AWS region used for all resources
+aws_region = 
+
+# AWS session token used to create AWS infrastructure
+aws_session_token = ""
+
+control_plane_instance_type = 
+worker_instance_type = 
+
+# AMI
+ami_id =
+
