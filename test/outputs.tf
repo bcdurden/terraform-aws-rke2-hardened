@@ -6,6 +6,6 @@ output "ssh_pubkey" {
     value = module.rke2-hardened.ssh_pubkey
 }
 output "kube" {
-    value = module.rke2-hardened.kube
+    value = module.rke2-hardened.kubeconfig
     sensitive = true
 }
