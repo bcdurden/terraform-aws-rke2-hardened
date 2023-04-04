@@ -40,6 +40,11 @@ variable "instance_type" {
   default     = "t3a.medium"
 }
 
+variable "aws_keypair_name" {
+    type        = string
+    description = "The AWS keypair to attach to the EC2 instance(s)"
+}
+
 variable "ami_id" {
   type        = string
   description = "AMI to be used for each EC2 instance"
@@ -66,9 +71,9 @@ variable "cluster_token" {
     default = "my-shared-token"
 }
 
-variable "apiserver_lb_name" {
-    type        = string
-    description = "The ApiServer Load Balancer name"
+variable "cp_main_ip" {
+  type = string
+  description = "The IP of the control plane node"
 }
 
 variable "rke2_version" {

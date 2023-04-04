@@ -37,21 +37,24 @@ resource "aws_instance" "rancher_server_workers" {
 
   user_data    = <<EOT
         #cloud-config
-        package_update: true
         write_files:
         - path: /etc/rancher/rke2/config.yaml
           owner: root
           content: |
             token: ${var.cluster_token}
             server: https://${var.cp_main_ip}:9345
-        packages:
-        - qemu-guest-agent
+            write-kubeconfig-mode: 0640
+            profile: cis-1.6
+            kube-apiserver-arg:
+            - authorization-mode=RBAC,Node
+            kubelet-arg:
+            - protect-kernel-defaults=true
+            - read-only-port=0
+            - authorization-mode=Webhook
         runcmd:
-        - - systemctl
-          - enable
-          - '--now'
-          - qemu-guest-agent.service
         - curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE="agent" INSTALL_RKE2_VERSION=${var.rke2_version} sh -
+        - cp -f /usr/local/share/rke2/rke2-cis-sysctl.conf /etc/sysctl.d/60-rke2-cis.conf
+        - systemctl restart systemd-sysctl
         - systemctl enable rke2-agent.service
         - systemctl start rke2-agent.service
         ssh_authorized_keys: 

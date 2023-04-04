@@ -1,27 +1,24 @@
 
-# AWS access key used to create infrastructure
-aws_access_key = 
+aws_access_key =
+aws_secret_key =
+aws_session_token =
+aws_region =
 
-# AWS secret key used to create AWS infrastructure
-aws_secret_key = 
-
-vpc_id = 
-
-# subnet_id = 
-subnet_ids = [
-]
-private_subnet_ids = [
-]
-
-# AWS region used for all resources
-aws_region = 
-
-# AWS session token used to create AWS infrastructure
-aws_session_token = ""
-
-control_plane_instance_type = 
-worker_instance_type = 
-
-# AMI
+prefix =
+control_plane_instance_type =
+worker_instance_type =
 ami_id =
+cp_name_prefix =
+worker_name_prefix =
+kubeconfig_filename =
+rke2_server_dns =
+worker_count =
+node_disk_size_gb =
+cluster_token =
+rke2_version =
+tags = {}
 
+
+vpc_id =
+subnet_ids =
+private_subnet_ids =

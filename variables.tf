@@ -9,11 +9,13 @@ variable "vpc_id" {
 }
 
 variable "subnet_ids" {
-  type = list(string)
+  type        = list(string)
+  description = "The list of public Subnet IDs within the environment"
 }
 
 variable "private_subnet_ids" {
-  type = list(string)
+  type        = list(string)
+  description = "The list of private Subnet IDs within the environment"
 }
 
 variable "aws_access_key" {
@@ -61,21 +63,23 @@ variable "ami_id" {
 }
 
 variable "control_plane_ha_mode" {
-    type = bool
+    type        = bool
     description = "The boolean trigger for installing an HA control plane (ie. 3 nodes)"
-    default = false
+    default     = false
 }
 
 variable "cp_name_prefix" {
-    type = string
+    type    = string
     default = "rke2-mgmt-controlplane"
 }
+
 variable "worker_name_prefix" {
-    type = string
+    type    = string
     default = "rke2-mgmt-worker"
 }
+
 variable "kubeconfig_filename" {
-    type = string
+    type    = string
     default = "kube_config_server.yaml"
 }
 
@@ -86,25 +90,31 @@ variable "rke2_server_dns" {
 }
 
 variable "worker_count" {
-  type = string
-  default = 3
+  type        = string
+  description = "The number of worker nodes to create"
+  default     = 3
 }
+
 variable "node_disk_size_gb" {
-  type = string
-  default = 20
+  type        = string
+  default     = 20
+  description = "The size of the hard drive on each node in GB"
 }
+
 variable "cluster_token" {
-    type = string
-    default = "my-shared-token"
+    type        = string
+    description = "The join token for the cluster"
 }
+
 variable "rke2_version" {
-  type = string
-  default = "v1.24.9+rke2r2"
+  type        = string
+  default     = "v1.24.9+rke2r2"
+  description = "The string defining the RKE2 version desired"
 }
 
 variable "tags" {
   type = map
-  default = {Owner = "brian"}
+  default = {}
   description = "Tags to apply to all AWS resources"
 }
 
