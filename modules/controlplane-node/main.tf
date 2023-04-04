@@ -2,7 +2,7 @@
 resource "aws_instance" "rancher_server_main" {
   ami           = var.ami_id
   instance_type = var.instance_type
-  subnet_id = var.private_subnet_ids[0] # use the first by default
+  subnet_id = var.subnet_ids[0] # use the first by default
   associate_public_ip_address = false 
   iam_instance_profile = var.iam_profile_name
 
@@ -30,7 +30,7 @@ resource "aws_instance" "rancher_server_main" {
   }
 
   root_block_device {
-    volume_size = var.node_disk_size
+    volume_size = var.node_disk_size_gb
   }
 
   user_data    = <<EOT
@@ -43,7 +43,7 @@ resource "aws_instance" "rancher_server_main" {
             token: ${var.cluster_token}
             tls-san:
             - ${var.rke2_server_dns}
-            - ${data.aws_lb.apiserver_lb.dns_name}
+            - ${var.lb_dns_name}
         runcmd:
         - curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION=${var.rke2_version} sh -
         - systemctl enable rke2-server.service
@@ -63,7 +63,7 @@ resource "aws_instance" "rancher_server_ha" {
   
   ami           = var.ami_id
   instance_type = var.instance_type
-  subnet_id = var.private_subnet_ids[(count.index + 1) % var.private_subnet_ids.size]
+  subnet_id = var.subnet_ids[(count.index + 1) % length(var.subnet_ids)]
   associate_public_ip_address = false 
   iam_instance_profile = var.iam_profile_name
 
@@ -91,7 +91,7 @@ resource "aws_instance" "rancher_server_ha" {
   }
 
   root_block_device {
-    volume_size = var.node_disk_size
+    volume_size = var.node_disk_size_gb
   }
 
   user_data    = <<EOT
@@ -105,7 +105,7 @@ resource "aws_instance" "rancher_server_ha" {
             server: https://${aws_instance.rancher_server_main.private_ip}:9345
             tls-san:
             - ${var.rke2_server_dns}
-            - ${data.aws_lb.apiserver_lb.dns_name}
+            - ${var.lb_dns_name}
         runcmd:
         - curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION=${var.rke2_version} sh -
         - systemctl enable rke2-server.service

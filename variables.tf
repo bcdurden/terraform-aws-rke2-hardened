@@ -1,3 +1,8 @@
+variable "environment_name" {
+  type        = string
+  description = "The name of this environment"
+}
+
 variable "vpc_id" {
   type        = string
   description = "Target VPC"
@@ -53,6 +58,12 @@ variable "worker_instance_type" {
 variable "ami_id" {
   type        = string
   default     = "ami-0f1289f37e46c1eff"
+}
+
+variable "control_plane_ha_mode" {
+    type = bool
+    description = "The boolean trigger for installing an HA control plane (ie. 3 nodes)"
+    default = false
 }
 
 variable "cp_name_prefix" {

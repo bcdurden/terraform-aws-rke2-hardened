@@ -52,18 +52,23 @@ variable "ami_id" {
 }
 
 variable "iam_profile_name" {
-    type        = string
-    description = "The IAM profile to attach to the EC2 instance(s)"
+  type        = string
+  description = "The IAM profile to attach to the EC2 instance(s)"
 }
 
 variable "aws_keypair_name" {
-    type        = string
-    description = "The AWS keypair to attach to the EC2 instance(s)"
+  type        = string
+  description = "The AWS keypair to attach to the EC2 instance(s)"
 }
 
 variable "security_group_ids" {
-    type        = list(string)
-    description = "The Security Group IDs to attach to the EC2 instance(s)"
+  type        = list(string)
+  description = "The Security Group IDs to attach to the EC2 instance(s)"
+}
+
+variable "lb_dns_name" {
+  type = string
+  description = "The CNAME of the apiserver Load Balancer"
 }
 
 variable "node_disk_size_gb" {
@@ -73,19 +78,14 @@ variable "node_disk_size_gb" {
 }
 
 variable "cluster_token" {
-    type = string
-    default = "my-shared-token"
+  type = string
+  default = "my-shared-token"
 }
 
 variable "rke2_server_dns" {
   type        = string
   description = "Optional DNS for RKE2 apiserver LB"
   default     = "empty.local"
-}
-
-variable "apiserver_lb_name" {
-    type        = string
-    description = "The ApiServer Load Balancer name"
 }
 
 variable "rke2_version" {
@@ -95,13 +95,13 @@ variable "rke2_version" {
 }
 
 variable "ssh_public_key" {
-    type        = string
-    description = "The SSH public key to inject into the EC2 instance(s)"
+  type        = string
+  description = "The SSH public key to inject into the EC2 instance(s)"
 }
 
 variable "ssh_key_filename" {
-    type        = string
-    description = "The filename of the SSH private key"
+  type        = string
+  description = "The filename of the SSH private key"
 }
 
 variable "tags" {

@@ -1,12 +1,9 @@
 resource "aws_instance" "rancher_server_workers" {
   count = var.worker_count
-  depends_on = [
-    aws_lb.apiserver_lb
-  ]
 
   ami           = var.ami_id
   instance_type = var.instance_type
-  subnet_id = var.private_subnet_ids[count.index % var.private_subnet_ids.size]
+  subnet_id = var.subnet_ids[count.index % length(var.subnet_ids)]
   associate_public_ip_address = false 
   iam_instance_profile = var.iam_profile_name
 
@@ -35,7 +32,7 @@ resource "aws_instance" "rancher_server_workers" {
 
 
   root_block_device {
-    volume_size = var.node_disk_size
+    volume_size = var.node_disk_size_gb
   }
 
   user_data    = <<EOT
@@ -46,7 +43,7 @@ resource "aws_instance" "rancher_server_workers" {
           owner: root
           content: |
             token: ${var.cluster_token}
-            server: https://${data.aws_lb.apiserver_lb.dns_name}:9345
+            server: https://${var.cp_main_ip}:9345
         packages:
         - qemu-guest-agent
         runcmd:

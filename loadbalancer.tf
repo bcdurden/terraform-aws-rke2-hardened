@@ -5,10 +5,7 @@ resource "aws_lb" "apiserver_lb" {
 
   subnets            = var.subnet_ids
 
-  tags = {
-    owner = "brian"
-    KeepRunning = "true"
-  }
+  tags = local.actual_tags
 }
 
 resource "aws_lb_target_group" "apiserver_lb_6443_tg" {
@@ -35,14 +32,27 @@ resource "aws_lb_listener" "front_end" {
   }
 }
 
-resource "aws_lb_target_group_attachment" "apiserver_lg_attach_6443" {
+resource "aws_lb_target_group_attachment" "apiserver_lg_attach_main_6443" {
   target_group_arn = aws_lb_target_group.apiserver_lb_6443_tg.arn
-  target_id        = aws_instance.rancher_server_master.id
+  target_id        = module.controlplane-nodes.main_instance_id
   port             = 6443
 }
-resource "aws_lb_target_group_attachment" "apiserver_lg_attach_443" {
+resource "aws_lb_target_group_attachment" "apiserver_lg_attach_main_443" {
   target_group_arn = aws_lb_target_group.apiserver_lb_443_tg.arn
-  target_id        = aws_instance.rancher_server_master.id
+  target_id        = module.controlplane-nodes.main_instance_id
+  port             = 443
+}
+
+resource "aws_lb_target_group_attachment" "apiserver_lg_attach_ha_6443" {
+  count = var.control_plane_ha_mode ? 2 : 0
+  target_group_arn = aws_lb_target_group.apiserver_lb_6443_tg.arn
+  target_id        = module.controlplane-nodes.ha_instance_ids[count.index]
+  port             = 6443
+}
+resource "aws_lb_target_group_attachment" "apiserver_lg_attach_ha_443" {
+  count = var.control_plane_ha_mode ? 2 : 0
+  target_group_arn = aws_lb_target_group.apiserver_lb_443_tg.arn
+  target_id        = module.controlplane-nodes.ha_instance_ids[count.index]
   port             = 443
 }
 
@@ -53,10 +63,7 @@ resource "aws_lb" "ingress_lb" {
 
   subnets            = var.subnet_ids
 
-  tags = {
-    owner = "brian"
-    KeepRunning = "true"
-  }
+  tags = local.actual_tags
 }
 
 resource "aws_lb_target_group" "ingress_lb_80_tg" {
@@ -97,13 +104,13 @@ resource "aws_lb_target_group_attachment" "ingress_lg_attach_443" {
   count = var.worker_count
 
   target_group_arn = aws_lb_target_group.ingress_lb_443_tg.arn
-  target_id        = aws_instance.rancher_server_workers[count.index].id
+  target_id        = module.worker.worker_ids[count.index]
   port             = 443
 }
 resource "aws_lb_target_group_attachment" "ingress_lg_attach_80" {
   count = var.worker_count
   
   target_group_arn = aws_lb_target_group.ingress_lb_80_tg.arn
-  target_id        = aws_instance.rancher_server_workers[count.index].id
+  target_id        = module.worker.worker_ids[count.index]
   port             = 80
 }

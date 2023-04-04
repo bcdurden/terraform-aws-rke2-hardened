@@ -9,8 +9,8 @@ output "ssh_key" {
 output "ssh_pubkey" {
     value = tls_private_key.global_key.public_key_openssh
 }
-output "kube" {
-    value = local_file.kube_config_server_yaml.content
+output "kubeconfig" {
+    value = local_file.kube_config_server_yaml.filename
     sensitive = true
 }
 output "rancher_api_lb_dns" {

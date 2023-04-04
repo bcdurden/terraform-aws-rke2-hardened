@@ -20,7 +20,7 @@ terraform {
   }
   backend "s3" {
     bucket = "multicloud-brian-bucket"
-    key    = "terraform-backend/state"
+    key    = "terraform-backend/state-module-test"
     region = "us-gov-west-1"
   }
 }
