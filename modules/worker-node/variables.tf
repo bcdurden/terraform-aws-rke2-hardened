@@ -103,3 +103,9 @@ variable "tags" {
   default     = {}
   description = "Tags to apply to all AWS resources"  
 }
+
+variable "rke2_registry" {
+  type = string
+  default = ""
+  description = "Default system registry (Carbide registry goes here)"
+}
