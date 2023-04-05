@@ -18,6 +18,8 @@ module "controlplane-nodes" {
   ssh_public_key     = tls_private_key.global_key.public_key_openssh
   ssh_key_filename   = local_sensitive_file.ssh_private_key_pem.filename
   rke2_registry      = var.rke2_registry
+  carbide_username   = var.carbide_username
+  carbide_password   = var.carbide_password
   tags               = local.actual_tags
 
   aws_access_key     = var.aws_access_key
@@ -45,6 +47,8 @@ module "worker" {
   ssh_public_key     = tls_private_key.global_key.public_key_openssh
   ssh_key_filename   = local_sensitive_file.ssh_private_key_pem.filename
   rke2_registry      = var.rke2_registry
+  carbide_username   = var.carbide_username
+  carbide_password   = var.carbide_password
   tags               = local.actual_tags
 
   aws_access_key     = var.aws_access_key
