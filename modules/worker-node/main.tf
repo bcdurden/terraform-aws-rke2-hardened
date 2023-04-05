@@ -43,6 +43,7 @@ resource "aws_instance" "rancher_server_workers" {
           content: |
             token: ${var.cluster_token}
             server: https://${var.cp_main_ip}:9345
+            system-default-registry: ${var.rke2_registry}
             write-kubeconfig-mode: 0640
             profile: cis-1.6
             kube-apiserver-arg:

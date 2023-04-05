@@ -44,6 +44,7 @@ resource "aws_instance" "rancher_server_main" {
             tls-san:
             - ${var.rke2_server_dns}
             - ${var.lb_dns_name}
+            system-default-registry: ${var.rke2_registry}
             profile: cis-1.6
             selinux: true
             secrets-encryption: true

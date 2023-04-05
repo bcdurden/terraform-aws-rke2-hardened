@@ -112,6 +112,12 @@ variable "rke2_version" {
   description = "The string defining the RKE2 version desired"
 }
 
+variable "rke2_registry" {
+  type = string
+  default = ""
+  description = "Default system registry (Carbide registry goes here)"
+}
+
 variable "tags" {
   type = map
   default = {}
