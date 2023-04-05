@@ -109,3 +109,15 @@ variable "rke2_registry" {
   default = ""
   description = "Default system registry (Carbide registry goes here)"
 }
+
+variable "carbide_username" {
+  type        = string
+  default     = ""
+  description = "Your Issued Carbide Registry ID goes here"
+}
+
+variable "carbide_password" {
+  type        = string
+  default     = ""
+  description = "Your Issued Carbide Registry Secret goes here"
+}

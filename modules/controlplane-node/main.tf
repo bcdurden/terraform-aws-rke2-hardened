@@ -71,6 +71,14 @@ resource "aws_instance" "rancher_server_main" {
             - read-only-port=0
             - authorization-mode=Webhook
             - streaming-connection-idle-timeout=5m
+        - path: /etc/rancher/rke2/registries.yaml
+          owner: root
+          content: |
+            configs:
+              "rgcrprod.azurecr.us":
+                auth:
+                  username: ${var.carbide_username}
+                  password: ${var.carbide_password}
         runcmd:
         - curl -sfL https://get.rke2.io | INSTALL_RKE2_VERSION=${var.rke2_version} sh -
         - systemctl enable rke2-server.service

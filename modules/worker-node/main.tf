@@ -52,6 +52,14 @@ resource "aws_instance" "rancher_server_workers" {
             - protect-kernel-defaults=true
             - read-only-port=0
             - authorization-mode=Webhook
+        - path: /etc/rancher/rke2/registries.yaml
+          owner: root
+          content: |
+            configs:
+              "rgcrprod.azurecr.us":
+                auth:
+                  username: ${var.carbide_username}
+                  password: ${var.carbide_password}
         runcmd:
         - curl -sfL https://get.rke2.io | INSTALL_RKE2_TYPE="agent" INSTALL_RKE2_VERSION=${var.rke2_version} sh -
         - cp -f /usr/local/share/rke2/rke2-cis-sysctl.conf /etc/sysctl.d/60-rke2-cis.conf
